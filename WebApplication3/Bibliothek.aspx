@@ -10,7 +10,7 @@
 <body>
     <form id="form1" runat="server">
         <div>
-            <h1>Bibliothek</h1>
+            <center><h1>Bibliothek</h1></center>
         </div>
     </form>
 </body>

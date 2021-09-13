@@ -67,6 +67,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
+    <Content Include="Data\Database.mdf" />
+    <Content Include="Data\Database_log.ldf">
+      <DependentUpon>Database.mdf</DependentUpon>
+    </Content>
     <Content Include="Bibliothek.aspx" />
     <Content Include="Web.config" />
   </ItemGroup>
