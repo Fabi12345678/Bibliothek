@@ -13,5 +13,12 @@ namespace WebApplication3
         {
 
         }
+
+        protected void Unnamed_Click(object sender, EventArgs e)
+        {
+            Class1 class1 = new Class1();
+            class1.test();
+            TextBox1.Text
+        }
     }
 }

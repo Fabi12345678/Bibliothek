@@ -12,6 +12,8 @@
         <div>
             <center><h1>Bibliothek</h1></center>
         </div>
+        <asp:button runat="server" text="Button" onclick="Unnamed_Click"/><asp:TextBox ID="TextBox1" runat="server"></asp:TextBox>
     </form>
 </body>
+
 </html>
