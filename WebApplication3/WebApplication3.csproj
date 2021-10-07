@@ -82,8 +82,8 @@
     <Compile Include="Bibliothek.aspx.designer.cs">
       <DependentUpon>Bibliothek.aspx</DependentUpon>
     </Compile>
-    <Compile Include="Class1.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SQLRequests.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />

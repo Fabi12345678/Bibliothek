@@ -14,11 +14,11 @@ namespace WebApplication3
 
         }
 
-        protected void Unnamed_Click(object sender, EventArgs e)
+        protected string CallLoadUsers()
         {
-            Class1 class1 = new Class1();
-            class1.test();
-            TextBox1.Text
+            SQLRequests sqlRequests = new SQLRequests();
+            string options = sqlRequests.LoadUsers();
+            return options;
         }
     }
 }

@@ -11,8 +11,12 @@
     <form id="form1" runat="server">
         <div>
             <center><h1>Bibliothek</h1></center>
+            <div style="float:right; width:100%">
+                <select style="min-width:15%; float:right; margin-right:50px">
+                    <%=CallLoadUsers() %>
+                </select>
+            </div>
         </div>
-        <asp:button runat="server" text="Button" onclick="Unnamed_Click"/><asp:TextBox ID="TextBox1" runat="server"></asp:TextBox>
     </form>
 </body>
 

@@ -1,16 +1,19 @@
 ﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Linq;
 using System.Web;
 
 namespace WebApplication3
 {
-    public class Class1
+    public class SQLRequests
     {
-        public void test()
+        public string LoadUsers()
         {
-            Debug.Print("TEST");
+            string options = "";
+
+            // SQL shit
+
+            return options;
         }
     }
 }
