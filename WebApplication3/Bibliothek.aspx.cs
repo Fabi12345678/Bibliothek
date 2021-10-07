@@ -11,7 +11,7 @@ namespace WebApplication3
     {
         protected void Page_Load(object sender, EventArgs e)
         {
-
+            // Abfrage ob Testdaten in DB sind wenn nicht Testdaten befüllen
         }
 
         protected string CallLoadUsers()
