@@ -17,7 +17,7 @@
             <center><h1>Bibliothek</h1></center>
             <div style="float:right; width:100%;">
                 <select style="min-width:15%; float:right; margin-right:50px">
-                    <%--<%=CallLoadUsers() %>--%>
+                    <%=CallLoadUsers() %>
                 </select>
             </div>
             <div class="user-container">
