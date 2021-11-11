@@ -13,19 +13,17 @@ namespace WebApplication3
     {
         OleDbConnection connection = new OleDbConnection(@"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\fabia\source\repos\Fabi12345678\Bibliothek\WebApplication3\App_Data\Database.accdb;Persist Security Info=True");
 
-        
-
         public string LoadUsers()
         {
             string options = "";
-            string cmd = "SELECT nutzername FROM nutzer";
+            string cmd = "SELECT nutzername, nummer FROM nutzer";
             connection.Open();
             // SQL shit
             OleDbCommand selectCmd = new OleDbCommand(cmd, connection);
             OleDbDataReader reader = selectCmd.ExecuteReader();
             while (reader.Read())
             {
-                Debug.Print(reader[0].ToString());
+                options += "<option value='"+ reader[1].ToString() + "'>" + reader[0].ToString() + "</option>";
             }
             reader.Close();
             connection.Close();
