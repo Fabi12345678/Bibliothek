@@ -68,10 +68,6 @@
   </ItemGroup>
   <ItemGroup>
     <Content Include="App_Data\Database.accdb" />
-    <Content Include="App_Data\Database.mdf" />
-    <Content Include="App_Data\Database_log.ldf">
-      <DependentUpon>Database.mdf</DependentUpon>
-    </Content>
     <Content Include="Bibliothek.aspx" />
     <Content Include="CSS\StyleSheet.css" />
     <Content Include="js\JavaScript.js" />
