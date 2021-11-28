@@ -70,7 +70,8 @@
     <Content Include="App_Data\Database.accdb" />
     <Content Include="Bibliothek.aspx" />
     <Content Include="CSS\StyleSheet.css" />
-    <Content Include="js\JavaScript.js" />
+    <Content Include="js\DataTable.js" />
+    <Content Include="js\Admin.js" />
     <Content Include="Web.config" />
   </ItemGroup>
   <ItemGroup>

@@ -1,11 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Data.OleDb;
-using System.Data.SqlClient;
-using System.Diagnostics;
-using System.Linq;
-using System.Web;
+﻿using System.Data.OleDb;
 
 namespace WebApplication3
 {
@@ -21,16 +14,40 @@ namespace WebApplication3
             // SQL shit
             OleDbCommand selectCmd = new OleDbCommand(cmd, connection);
             OleDbDataReader reader = selectCmd.ExecuteReader();
+
             while (reader.Read())
             {
                 options += "<option value='"+ reader[1].ToString() + "'>" + reader[0].ToString() + "</option>";
             }
+
             reader.Close();
             connection.Close();
 
             
 
             return options;
+        }
+
+        public string LoadBooks()
+        { 
+            string value = "";
+            string cmd = "SELECT nummer,autor,titel,ausgeliehen_von,rueckgabedatum,anzahl_verl FROM buch";
+            connection.Open();
+            // SQL shit
+            OleDbCommand selectCmd = new OleDbCommand(cmd, connection);
+            OleDbDataReader reader = selectCmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                value += "<tr><td>" + reader[0].ToString() + "</td><td>" + reader[1].ToString() + "</td><td>" + reader[2].ToString() + "</td><td>" + reader[3].ToString() + "</td><td>" + reader[4].ToString() + "</td><td>" + reader[5].ToString() + "</td></tr>";
+
+                //<option value='" + reader[1].ToString() + "'>" + reader[0].ToString() + "</option>
+            }
+
+            reader.Close();
+            connection.Close();
+
+            return value;
         }
     }
 }

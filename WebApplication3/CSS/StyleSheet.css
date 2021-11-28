@@ -1,2 +1,36 @@
-﻿body {
+﻿.dtsp-name:hover {
+    background-color: #E0E0E0;
+}
+div .tab {
+    background-color: #343a40;
+    border: solid #ffffff 1px;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    cursor: pointer;
+    float: left;
+}
+div .tab.is-active {
+    font-weight: bold;
+    background-color: #141a20;
+}
+div .tab:hover {
+    background-color: white;
+    border: solid #000000 1px;
+    color: #343a40;
+}
+.header {
+    background-color: #343a40;
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    font-weight: bold;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 32px;
+    width: 100%;
 }
