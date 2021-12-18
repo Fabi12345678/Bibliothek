@@ -11,7 +11,6 @@ namespace WebApplication3
             string options = "";
             string cmd = "SELECT nutzername, nummer FROM nutzer";
             connection.Open();
-            // SQL shit
             OleDbCommand selectCmd = new OleDbCommand(cmd, connection);
             OleDbDataReader reader = selectCmd.ExecuteReader();
 
@@ -31,17 +30,33 @@ namespace WebApplication3
         public string LoadBooks()
         { 
             string value = "";
-            string cmd = "SELECT nummer,autor,titel,ausgeliehen_von,rueckgabedatum,anzahl_verl FROM buch";
+            string cmd = "SELECT nummer,autor,titel,rueckgabedatum,anzahl_verl,ausgeliehen_von FROM buch";
             connection.Open();
-            // SQL shit
             OleDbCommand selectCmd = new OleDbCommand(cmd, connection);
             OleDbDataReader reader = selectCmd.ExecuteReader();
 
             while (reader.Read())
             {
                 value += "<tr><td>" + reader[0].ToString() + "</td><td>" + reader[1].ToString() + "</td><td>" + reader[2].ToString() + "</td><td>" + reader[3].ToString() + "</td><td>" + reader[4].ToString() + "</td><td>" + reader[5].ToString() + "</td></tr>";
+            }
 
-                //<option value='" + reader[1].ToString() + "'>" + reader[0].ToString() + "</option>
+            reader.Close();
+            connection.Close();
+
+            return value;
+        }
+
+        public string LoadUserInfo(string id)
+        {
+            string value = "";
+            string cmd = "SELECT n.nummer, n.nutzername, n.gebuehrenstand, a.nummer, a.zuletzt_gueltig, a.gesperrt FROM nutzer as n LEFT JOIN ausweis as a ON n.nummer = a.nutzer_nummer WHERE n.nummer = " + id;
+            connection.Open();
+            OleDbCommand selectCmd = new OleDbCommand(cmd, connection);
+            OleDbDataReader reader = selectCmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                value += "<tr><td>" + reader[0].ToString() + "</td><td>" + reader[1].ToString() + "</td><td>" + reader[2].ToString() + "</td><td>" + reader[3].ToString() + "</td><td>" + reader[4].ToString() + "</td><td>" + reader[5].ToString() + "</td></tr>";
             }
 
             reader.Close();

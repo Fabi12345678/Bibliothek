@@ -7,11 +7,13 @@
 // </automatisch generiert>
 //------------------------------------------------------------------------------
 
-namespace WebApplication3 {
-    
-    
-    public partial class Bibliothek {
-        
+namespace WebApplication3
+{
+
+
+    public partial class Bibliothek
+    {
+
         /// <summary>
         /// form1-Steuerelement
         /// </summary>
@@ -20,23 +22,14 @@ namespace WebApplication3 {
         /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
         protected global::System.Web.UI.HtmlControls.HtmlForm form1;
-        
+
         /// <summary>
-        /// tbxSearchBox-Steuerelement
+        /// UserSearchButton-Steuerelement
         /// </summary>
         /// <remarks>
         /// Automatisch generiertes Feld
         /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
         /// </remarks>
-        protected global::System.Web.UI.WebControls.TextBox tbxSearchBox;
-        
-        /// <summary>
-        /// SearchButton-Steuerelement
-        /// </summary>
-        /// <remarks>
-        /// Automatisch generiertes Feld
-        /// Zum Ändern Felddeklaration aus der Designerdatei in eine Code-Behind-Datei verschieben.
-        /// </remarks>
-        protected global::System.Web.UI.WebControls.Button SearchButton;
+        protected global::System.Web.UI.WebControls.Button UserSearchButton;
     }
 }

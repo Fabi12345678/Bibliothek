@@ -2,6 +2,13 @@
 
 <!DOCTYPE html>
 
+<script runat="server">
+    void GetUserData()
+    {
+        string userData = "";
+    }
+</script>
+
 <html>
 <head runat="server">
     <title>Bibliothek-App</title>
@@ -28,18 +35,25 @@
                 <div class="tab is-active" data-tab="book-list-container">Bücherliste</div>
                 <div class="tab" data-tab="user-container">Nutzer</div>
             </div>
-            <div class="bib-tab user-container">
+            <div class="bib-tab user-container col-12">
                 <div style="float:right; width:100%;">
-                    <select style="min-width:15%; float:right; margin-right:50px">
+                    <select ID="UserSelect" style="min-width:15%;" class="my-3">
                         <%= CallLoadUsers() %>
                     </select>
-                </div>
-            </div>
+                    <asp:Button ID="UserSearchButton" runat="server" Text="Suchen" OnClick="GetUserData"/>
+                    <div class="user-data-container"style=" margin-top:20px;">
+                        <div class="col-6">
+                            <div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
+                                <div class="card-header">Personendaten<a class="info-name"></a></div>
+                                <div class="card-body">
 
-            <div class="user-container">
-                <div style="width:100%; text-align: center;">
-                    <!-- <asp:TextBox ID="tbxSearchBox" runat="server"></asp:TextBox>
-                    <asp:Button ID="SearchButton" runat="server" Text="Buch Suchen"/> -->
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-6">
+
+                        </div>
+                    </div>
                 </div>
             </div>
 
