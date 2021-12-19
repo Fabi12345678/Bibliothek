@@ -17,13 +17,29 @@ namespace WebApplication3
         protected void Page_Load(object sender, EventArgs e)
         {
             //CreateBookExamples();
+            if(!IsPostBack)
+                CallLoadUsers();
         }
-
-        protected string CallLoadUsers()
+        protected string CallLoadUserInfos()
         {
+            SQLRequests sqlRequest = new SQLRequests();
+            if (IsPostBack)
+                return sqlRequest.LoadUserInfo(Request.Form["UserSelect"]);
+            else
+                return "";
+        }
+        protected void CallLoadUsers()
+        {
+            List<string> userList = new List<string>();
             SQLRequests sqlRequests = new SQLRequests();
-
-            return sqlRequests.LoadUsers();
+            userList = sqlRequests.LoadUsers2();
+            int index = 0;
+            foreach (string user in userList)
+            {
+                //1=id
+                UserSelect.Items.Insert(index, new ListItem(user.Split(';')[1], user.Split(';')[0]));
+                index++;
+            }
         }
 
         protected string CallLoadBooks()

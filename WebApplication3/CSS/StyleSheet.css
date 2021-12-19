@@ -34,3 +34,6 @@ div .tab:hover {
     font-size: 32px;
     width: 100%;
 }
+.min-width15{
+    min-width: 15%;
+}

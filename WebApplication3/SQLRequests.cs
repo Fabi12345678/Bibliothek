@@ -1,4 +1,5 @@
-﻿using System.Data.OleDb;
+﻿using System.Collections.Generic;
+using System.Data.OleDb;
 
 namespace WebApplication3
 {
@@ -25,6 +26,24 @@ namespace WebApplication3
             
 
             return options;
+        }
+        public List<string> LoadUsers2()
+        {
+            List<string> userList = new List<string>();
+            userList.Clear();
+            string cmd = "SELECT nutzername, nummer FROM nutzer";
+            connection.Open();
+            OleDbCommand selectCmd = new OleDbCommand(cmd, connection);
+            OleDbDataReader reader = selectCmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                userList.Add(reader[1].ToString() + ";" + reader[0].ToString());
+            }
+
+            reader.Close();
+            connection.Close();
+            return userList;
         }
 
         public string LoadBooks()
@@ -56,7 +75,7 @@ namespace WebApplication3
 
             while (reader.Read())
             {
-                value += "<tr><td>" + reader[0].ToString() + "</td><td>" + reader[1].ToString() + "</td><td>" + reader[2].ToString() + "</td><td>" + reader[3].ToString() + "</td><td>" + reader[4].ToString() + "</td><td>" + reader[5].ToString() + "</td></tr>";
+                value += "<table><tr><td>" + reader[0].ToString() + "</td><td>" + reader[1].ToString() + "</td><td>" + reader[2].ToString() + "</td><td>" + reader[3].ToString() + "</td><td>" + reader[4].ToString() + "</td><td>" + reader[5].ToString() + "</td></tr></table>";
             }
 
             reader.Close();

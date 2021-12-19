@@ -37,16 +37,18 @@
             </div>
             <div class="bib-tab user-container col-12">
                 <div style="float:right; width:100%;">
-                    <select ID="UserSelect" style="min-width:15%;" class="my-3" name="UserSelect">
+                    <%--<select ID="UserSelect" style="min-width:15%;" class="my-3" name="UserSelect">
                         <%= CallLoadUsers() %>
-                    </select>
+                    </select>--%>
+                    <asp:DropDownList ID="UserSelect" runat="server" CssClass="my-3 min-width15">
+                    </asp:DropDownList>
                     <asp:Button ID="UserSearchButton" runat="server" Text="Suchen" OnClick="UserSearchButton_Click"/>
                     <div class="user-data-container"style=" margin-top:20px;">
                         <div class="col-6">
                             <div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
                                 <div class="card-header">Personendaten<a class="info-name"></a></div>
                                 <div class="card-body">
-
+                                    <%= CallLoadUserInfos() %>
                                 </div>
                             </div>
                         </div>
