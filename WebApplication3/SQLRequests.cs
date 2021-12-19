@@ -5,8 +5,8 @@ namespace WebApplication3
 {
     public class SQLRequests
     {
-        //OleDbConnection connection = new OleDbConnection(@"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\thowe\Source\Repos\Bibliothek\WebApplication3\App_Data\Database.accdb;Persist Security Info=True");
-        OleDbConnection connection = new OleDbConnection(@"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\fabia\Source\Repos\Fabi12345678\Bibliothek\WebApplication3\App_Data\Database.accdb;Persist Security Info=True");
+        OleDbConnection connection = new OleDbConnection(@"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\thowe\Source\Repos\Bibliothek\WebApplication3\App_Data\Database.accdb;Persist Security Info=True");
+        //OleDbConnection connection = new OleDbConnection(@"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\fabia\Source\Repos\Fabi12345678\Bibliothek\WebApplication3\App_Data\Database.accdb;Persist Security Info=True");
         public string LoadUsers()
         {
             string options = "";
@@ -22,8 +22,6 @@ namespace WebApplication3
 
             reader.Close();
             connection.Close();
-
-            
 
             return options;
         }
@@ -43,6 +41,7 @@ namespace WebApplication3
 
             reader.Close();
             connection.Close();
+
             return userList;
         }
 
@@ -75,13 +74,33 @@ namespace WebApplication3
 
             while (reader.Read())
             {
-                value += "<table><tr><td>" + reader[0].ToString() + "</td><td>" + reader[1].ToString() + "</td><td>" + reader[2].ToString() + "</td><td>" + reader[3].ToString() + "</td><td>" + reader[4].ToString() + "</td><td>" + reader[5].ToString() + "</td></tr></table>";
+                value += "Nutzernummer: " + reader[0].ToString() + "<br>Nutzername: " + reader[1].ToString() + "<br>Gebuehrenstand in €: " + reader[2].ToString() + "<br>Ausweisnummer: " + reader[3].ToString() + "<br>Ausweis zuletzt Gültig: " + reader[4].ToString() + "<br>Ausweis gesperrt: " + reader[5].ToString();
             }
 
             reader.Close();
             connection.Close();
 
             return value;
+        }
+
+        public List<string> LoadAvailableBooks()
+        {
+            List<string> availableBooks = new List<string>();
+            availableBooks.Clear();
+            string cmd = "SELECT nummer,titel FROM buch WHERE buch.ausgeliehen_von is NULL";
+            connection.Open();
+            OleDbCommand selectCmd = new OleDbCommand(cmd, connection);
+            OleDbDataReader reader = selectCmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                availableBooks.Add(reader[1].ToString() + ";" + reader[0].ToString());
+            }
+
+            reader.Close();
+            connection.Close();
+
+            return availableBooks;
         }
     }
 }

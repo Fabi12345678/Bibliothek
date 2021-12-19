@@ -2,13 +2,6 @@
 
 <!DOCTYPE html>
 
-<script runat="server">
-    void GetUserData()
-    {
-        string userData = "";
-    }
-</script>
-
 <html>
 <head runat="server">
     <title>Bibliothek-App</title>
@@ -37,13 +30,10 @@
             </div>
             <div class="bib-tab user-container col-12">
                 <div style="float:right; width:100%;">
-                    <%--<select ID="UserSelect" style="min-width:15%;" class="my-3" name="UserSelect">
-                        <%= CallLoadUsers() %>
-                    </select>--%>
                     <asp:DropDownList ID="UserSelect" runat="server" CssClass="my-3 min-width15">
                     </asp:DropDownList>
                     <asp:Button ID="UserSearchButton" runat="server" Text="Suchen" OnClick="UserSearchButton_Click"/>
-                    <div class="user-data-container"style=" margin-top:20px;">
+                    <div class="user-data-container row"style=" margin-top:20px;">
                         <div class="col-6">
                             <div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
                                 <div class="card-header">Personendaten<a class="info-name"></a></div>
@@ -53,7 +43,7 @@
                             </div>
                         </div>
                         <div class="col-6">
-
+                            <asp:DropDownList ID="DropDownList1" runat="server"></asp:DropDownList>
                         </div>
                     </div>
                 </div>
