@@ -7,8 +7,8 @@ namespace WebApplication3
 {
     public class SQLRequests
     {
-        //OleDbConnection connection = new OleDbConnection(@"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\thowe\Source\Repos\Bibliothek\WebApplication3\App_Data\Database.accdb;Persist Security Info=True");
-        OleDbConnection connection = new OleDbConnection(@"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\fabia\Source\Repos\Fabi12345678\Bibliothek\WebApplication3\App_Data\Database.accdb;Persist Security Info=True");
+        OleDbConnection connection = new OleDbConnection(@"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\thowe\Source\Repos\Bibliothek\WebApplication3\App_Data\Database.accdb;Persist Security Info=True");
+        //OleDbConnection connection = new OleDbConnection(@"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\fabia\Source\Repos\Fabi12345678\Bibliothek\WebApplication3\App_Data\Database.accdb;Persist Security Info=True");
         
         public List<string> LoadUsers2()
         {
@@ -41,6 +41,25 @@ namespace WebApplication3
             while (reader.Read())
             {
                 value += "<tr><td>" + reader[0].ToString() + "</td><td>" + reader[1].ToString() + "</td><td>" + reader[2].ToString() + "</td><td>" + reader[3].ToString() + "</td><td>" + reader[4].ToString() + "</td><td>" + reader[5].ToString() + "</td></tr>";
+            }
+
+            reader.Close();
+            connection.Close();
+
+            return value;
+        }
+
+        public string LoadUserBooks(string userId)
+        {
+            string value = "";
+            string cmd = "SELECT nummer,autor,titel,rueckgabedatum,anzahl_verl FROM buch WHERE ausgeliehen_von like " + userId;
+            connection.Open();
+            OleDbCommand selectCmd = new OleDbCommand(cmd, connection);
+            OleDbDataReader reader = selectCmd.ExecuteReader();
+
+            while (reader.Read())
+            {
+                value += "<tr><td>" + reader[0].ToString() + "</td><td>" + reader[1].ToString() + "</td><td>" + reader[2].ToString() + "</td><td>" + reader[3].ToString() + "</td><td>" + reader[4].ToString() + "</td></tr>";
             }
 
             reader.Close();
