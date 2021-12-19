@@ -7,9 +7,9 @@ namespace WebApplication3
 {
     public class SQLRequests
     {
-        OleDbConnection connection = new OleDbConnection(@"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\thowe\Source\Repos\Bibliothek\WebApplication3\App_Data\Database.accdb;Persist Security Info=True");
-        //OleDbConnection connection = new OleDbConnection(@"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\fabia\Source\Repos\Fabi12345678\Bibliothek\WebApplication3\App_Data\Database.accdb;Persist Security Info=True");
-        
+        //OleDbConnection connection = new OleDbConnection(@"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\thowe\Source\Repos\Bibliothek\WebApplication3\App_Data\Database.accdb;Persist Security Info=True");
+        OleDbConnection connection = new OleDbConnection(@"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\fabia\Source\Repos\Fabi12345678\Bibliothek\WebApplication3\App_Data\Database.accdb;Persist Security Info=True");
+
         public List<string> LoadUsers2()
         {
             List<string> userList = new List<string>();
@@ -268,8 +268,18 @@ namespace WebApplication3
 
         public string ReserveBook(string bookID, string userID)
         {
-            string select = "SELECT ausgeliehen_von FROM buch WHERE nummer like '" + bookID + "'";
             connection.Open();
+            string select = "SELECT ausgeliehen_von, reserviert_von FROM buch WHERE nummer like '" + bookID + "'";
+            string gesperrtSelect = "SELECT gesperrt FROM ausweis WHERE nutzer_nummer like '" + userID + "'";
+            OleDbCommand selCMD = new OleDbCommand(gesperrtSelect, connection);
+            OleDbDataReader reader2 = selCMD.ExecuteReader();
+            string gesperrt = "";
+            while (reader2.Read())
+            {
+                gesperrt = reader2[0].ToString();
+            }
+            reader2.Close();
+
             OleDbCommand selectCMD = new OleDbCommand(select, connection);
             OleDbDataReader reader = selectCMD.ExecuteReader();
             while (reader.Read())
@@ -292,6 +302,16 @@ namespace WebApplication3
                     }
                     else
                     {
+                        if(reader[1].ToString() != "")
+                        {
+                            reader.Close();
+                            return "Das Buch wurde bereits reserviert und kann daher nicht reserviert werden!";
+                        }
+                        if(gesperrt == "True")
+                        {
+                            reader.Close();
+                            return "Der Benutzer ist gesperrt und kann daher kein Buch reservieren!";
+                        }
                         OleDbCommand updateCMD = new OleDbCommand("UPDATE buch SET reserviert_von = '" + userID + "' WHERE nummer like '" + bookID + "'", connection);
                         updateCMD.ExecuteNonQuery();
                     }
