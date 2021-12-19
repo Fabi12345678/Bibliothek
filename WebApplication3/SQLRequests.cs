@@ -72,7 +72,7 @@ namespace WebApplication3
         {
             List<string> availableBooks = new List<string>();
             availableBooks.Clear();
-            string cmd = "SELECT nummer,titel FROM buch WHERE buch.ausgeliehen_von is NULL";
+            string cmd = "SELECT nummer,titel FROM buch";
             connection.Open();
             OleDbCommand selectCmd = new OleDbCommand(cmd, connection);
             OleDbDataReader reader = selectCmd.ExecuteReader();
@@ -91,13 +91,21 @@ namespace WebApplication3
         public string BorrowBook(string userID, string bookID)
         {
             connection.Open();
-            string select = "SELECT reserviert_von FROM buch WHERE nummer like '" + bookID + "'";
+            string select = "SELECT ausgeliehen_von, reserviert_von FROM buch WHERE nummer like '" + bookID + "'";
+            string gesperrtSelect = "SELECT gesperrt FROM ausweis WHERE nutzer_nummer like '" + userID + "'";
             OleDbCommand selectCMD = new OleDbCommand(select,connection);
             OleDbDataReader reader = selectCMD.ExecuteReader();
-
+            OleDbCommand selCMD = new OleDbCommand(gesperrtSelect, connection);
+            OleDbDataReader reader2 = selCMD.ExecuteReader();
+            string gesperrt = "";
+            while (reader2.Read())
+            {
+                gesperrt = reader2[0].ToString();
+            }
+            reader2.Close();
             while (reader.Read())
             {
-                if(reader[0].ToString() == "")
+                if(reader[0].ToString() == "" && gesperrt != "True" && (reader[1].ToString() == userID || reader[1].ToString() == ""))
                 {
                     DateTime date = DateTime.Now.AddDays(21);
                     string cmd = "UPDATE buch SET ausgeliehen_von =" + userID + ", anzahl_verl = 0, rueckgabedatum = '" + date + "' WHERE nummer like '" + bookID + "'";
@@ -109,23 +117,16 @@ namespace WebApplication3
                 }
                 else
                 {
-                    if(reader[0].ToString() == userID)
-                    {
-                        DateTime date = DateTime.Now.AddDays(21);
-                        string cmd = "UPDATE buch SET ausgeliehen_von =" + userID + ", anzahl_verl = 0, rueckgabedatum = '" + date + "' WHERE nummer like '" + bookID + "'";
-                        OleDbCommand insertCMD = new OleDbCommand(cmd, connection);
-                        insertCMD.ExecuteNonQuery();
-                        connection.Close();
-                        reader.Close();
-                        return "";
-                    }
+                    connection.Close();
+                    reader.Close();
+                    if (gesperrt == "True")
+                        return "Der Benutzer ist gesperrt und kann daher nichts ausleihen!";
                     else
-                    {
-                        reader.Close();
-                        return "Das Buch wurde bereits von einem anderen Benutzer reserviert und kann daher nicht ausgeliehen werden!";
-                    }
+                        return "Das Buch wurde bereits ausgeliehen oder von einem anderen Benutzer reserviert und kann daher nicht ausgeliehen werden!";
                 }
             }
+            OleDbCommand isrtCMD = new OleDbCommand("UPDATE buch SET reserviert_von = NULL WHERE nummer like '" + bookID + "'", connection);
+            isrtCMD.ExecuteNonQuery();
             connection.Close();
             return "";
             
@@ -171,7 +172,7 @@ namespace WebApplication3
             float stand = 0;
             float newStand = 0;
             string gesperrt = "";
-
+            double diffDays = 0;
             while (reader.Read()) 
             {
                 DateTime date = DateTime.Parse(reader[0].ToString());
@@ -183,9 +184,10 @@ namespace WebApplication3
                     while (reader2.Read())
                     {
                         stand = float.Parse(reader2[0].ToString());
-                        double diffDays = (DateTime.Now - date).TotalDays;
+                        diffDays = (DateTime.Now - date).TotalDays;
                         diffDays = diffDays / 7;
-                        newStand = stand + Int32.Parse(diffDays.ToString()) * 10;
+                        diffDays = Math.Ceiling(diffDays);
+                        newStand = (float)(stand + (diffDays * 10));
                         
                         if (newStand >= 50)
                         {
@@ -199,18 +201,50 @@ namespace WebApplication3
                     }
                     reader2.Close();
                 }
+                else
+                {
+                    select = "SELECT gebuehrenstand FROM nutzer WHERE nummer like '" + userID + "'";
+                    selectCMD = new OleDbCommand(select, connection);
+                    OleDbDataReader reader2 = selectCMD.ExecuteReader();
+                    while (reader2.Read())
+                    {
+                        stand = float.Parse(reader2[0].ToString());
+                    }
+                    reader2.Close();
+                }
+            }
+            if (reader.HasRows == false)
+            {
+                reader.Close();
+                connection.Close();
+                return "";
             }
             reader.Close();
+           
+            select = "SELECT gesperrt FROM ausweis WHERE nutzer_nummer like '" + userID + "'";
+            selectCMD = new OleDbCommand(select, connection);
+            OleDbDataReader reader3 = selectCMD.ExecuteReader();
+            while (reader3.Read())
+            {
+                gesperrt = reader3[0].ToString();
+            }
+            reader3.Close();
+
             string updatecommand = "UPDATE buch SET anzahl_verl = NULL, ausgeliehen_von = NULL, rueckgabedatum = NULL WHERE nummer like '" + bookID + "'";
             OleDbCommand updateCMD = new OleDbCommand(updatecommand, connection);
             updateCMD.ExecuteNonQuery();
             connection.Close();
             string gesperrtText;
-            if (gesperrt == "true")
+            if (gesperrt == "True")
                 gesperrtText = "Der Benutzer ist gesperrt";
             else
                 gesperrtText = "Der Benutzer ist nicht gesperrt";
-            return "Es sind " + (newStand - newStand) + "€ an Gebühren angefallen und somit lautet der aktuelle Gebührenstand: " + newStand + "€. " + gesperrtText;
+            double gebühren = 0;
+            if(newStand != 0)
+            {
+                gebühren = Math.Ceiling(diffDays) * 10;
+            }
+            return "Es sind " + gebühren + "€ an Gebühren angefallen und somit lautet der aktuelle Gebührenstand: " + Math.Round(stand + gebühren,2) + "€. " + gesperrtText;
         }
 
         public string ReserveBook(string bookID, string userID)

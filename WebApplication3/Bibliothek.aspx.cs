@@ -128,6 +128,7 @@ namespace WebApplication3
             }
             reader.Close();
             connection.Close();
+            ErrorLabel.Text = "";
         }
 
         protected void AusleihButton_Click(object sender, EventArgs e)
