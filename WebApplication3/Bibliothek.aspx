@@ -70,9 +70,6 @@
                         </div>
                     </div>
                 </div>
-                <div>
-                    <asp:Label ID="ErrorLabel" runat="server" Text=""></asp:Label>
-                </div>
             </div>
 
             <div class="bib-tab book-list-container col-12 mt-5">
@@ -92,7 +89,9 @@
                     </tbody>
                 </table>
             </div>
-
+            <div class="col-12 my-3 text-danger">
+                <asp:Label ID="ErrorLabel" runat="server" Text=""></asp:Label>
+            </div>
         </div>
     </form>
 </body>
