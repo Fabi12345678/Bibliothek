@@ -29,12 +29,12 @@
                 <div class="tab" data-tab="user-container">Nutzer</div>
             </div>
             <div class="bib-tab user-container col-12">
-                <div style="float:right; width:100%;">
+                <div style="float:right; width:100%;" class="col-12">
                     <asp:DropDownList ID="UserSelect" runat="server" CssClass="my-3 min-width15">
                     </asp:DropDownList>
                     <asp:Button ID="UserSearchButton" runat="server" Text="Suchen" OnClick="UserSearchButton_Click"/>
                     <div class="user-data-container row"style=" margin-top:20px;">
-                        <div class="col-6">
+                        <div>
                             <div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
                                 <div class="card-header">Personendaten<a class="info-name"></a></div>
                                 <div class="card-body">
@@ -42,10 +42,20 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-6">
-                            <asp:DropDownList ID="DropDownList1" runat="server"></asp:DropDownList>
+                        <div>
+                            <asp:DropDownList ID="AvailableBooks" runat="server"></asp:DropDownList>
+                            <asp:Button ID="AusleihButton" runat="server" Text="Ausleihen" OnClick="AusleihButton_Click" />
+                            <asp:Button ID="Reservieren" runat="server" Text="Reservieren" OnClick="Reservieren_Click" />
+                        </div>
+                        <div style="background-color:lightblue">
+                            <asp:DropDownList ID="BorrowedBooks" runat="server"></asp:DropDownList>
+                            <asp:Button ID="VerlängernButton" runat="server" Text="Verlängern" OnClick="VerlängernButton_Click" />
+                            <asp:Button ID="Zurückgeben" runat="server" Text="Zurückgeben" OnClick="Zurückgeben_Click" />
                         </div>
                     </div>
+                </div>
+                <div>
+                    <asp:Label ID="ErrorLabel" runat="server" Text=""></asp:Label>
                 </div>
             </div>
 

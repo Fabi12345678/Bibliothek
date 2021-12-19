@@ -11,14 +11,30 @@ namespace WebApplication3
 {
     public partial class Bibliothek : System.Web.UI.Page
     {
-        OleDbConnection connection = new OleDbConnection(@"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\thowe\Source\Repos\Bibliothek\WebApplication3\App_Data\Database.accdb;Persist Security Info=True");
-        //OleDbConnection connection = new OleDbConnection(@"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\fabia\Source\Repos\Fabi12345678\Bibliothek\WebApplication3\App_Data\Database.accdb;Persist Security Info=True");
+        //OleDbConnection connection = new OleDbConnection(@"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\thowe\Source\Repos\Bibliothek\WebApplication3\App_Data\Database.accdb;Persist Security Info=True");
+        OleDbConnection connection = new OleDbConnection(@"Provider=Microsoft.ACE.OLEDB.12.0;Data Source=C:\Users\fabia\Source\Repos\Fabi12345678\Bibliothek\WebApplication3\App_Data\Database.accdb;Persist Security Info=True");
         
         protected void Page_Load(object sender, EventArgs e)
         {
             //CreateBookExamples();
-            if(!IsPostBack)
+            if (!IsPostBack)
+            {
                 CallLoadUsers();
+                List<string> availableBooks = new List<string>();
+                availableBooks.Clear();
+                SQLRequests sqlRequests = new SQLRequests();
+                availableBooks = sqlRequests.LoadAvailableBooks();
+                AvailableBooks.Items.Clear();
+                int index = 0;
+                foreach (string user in availableBooks)
+                {
+                    AvailableBooks.Items.Insert(index, new ListItem(user.Split(';')[0], user.Split(';')[1]));
+                    index++;
+                }
+            }
+            
+            
+
         }
         protected string CallLoadUserInfos()
         {
@@ -28,6 +44,7 @@ namespace WebApplication3
             else
                 return "";
         }
+        
         protected void CallLoadUsers()
         {
             List<string> userList = new List<string>();
@@ -98,7 +115,111 @@ namespace WebApplication3
 
         protected void UserSearchButton_Click(object sender, EventArgs e)
         {
-            Debug.Print(Request.Form["UserSelect"]);
+            BorrowedBooks.Items.Clear();
+            string cmd = "SELECT b.titel, b.anzahl_verl, b.nummer FROM buch as b WHERE b.ausgeliehen_von LIKE '" + UserSelect.SelectedValue + "'";
+            connection.Open();
+            OleDbCommand selectCmd = new OleDbCommand(cmd, connection);
+            OleDbDataReader reader = selectCmd.ExecuteReader();
+            int index = 0;
+            while (reader.Read())
+            {
+                BorrowedBooks.Items.Insert(index, new ListItem(reader[0].ToString() + " - " + reader[1].ToString() , reader[2].ToString()));
+                index++;
+            }
+            reader.Close();
+            connection.Close();
+        }
+
+        protected void AusleihButton_Click(object sender, EventArgs e)
+        {
+            string userID = UserSelect.SelectedValue;
+            string bookID = AvailableBooks.SelectedValue;
+            SQLRequests sqlRequest = new SQLRequests();
+            string errorMessage = sqlRequest.BorrowBook(userID, bookID);
+            ErrorLabel.Text = errorMessage;
+            List<string> availableBooks = new List<string>();
+            availableBooks.Clear();
+            SQLRequests sqlRequests = new SQLRequests();
+            availableBooks = sqlRequests.LoadAvailableBooks();
+            AvailableBooks.Items.Clear();
+            int index = 0;
+            foreach (string user in availableBooks)
+            {
+                AvailableBooks.Items.Insert(index, new ListItem(user.Split(';')[0], user.Split(';')[1]));
+                index++;
+            }
+
+            BorrowedBooks.Items.Clear();
+            string cmd = "SELECT b.titel, b.anzahl_verl, b.nummer FROM buch as b WHERE b.ausgeliehen_von LIKE '" + UserSelect.SelectedValue + "'";
+            connection.Open();
+            OleDbCommand selectCmd = new OleDbCommand(cmd, connection);
+            OleDbDataReader reader = selectCmd.ExecuteReader();
+            index = 0;
+            while (reader.Read())
+            {
+                BorrowedBooks.Items.Insert(index, new ListItem(reader[0].ToString() + " - " + reader[1].ToString(), reader[2].ToString()));
+                index++;
+            }
+            reader.Close();
+            connection.Close();
+        }
+
+        protected void VerlängernButton_Click(object sender, EventArgs e)
+        {
+            SQLRequests sqlRequests = new SQLRequests();
+            string errorMessage = sqlRequests.ExpandBook(BorrowedBooks.SelectedValue);
+            ErrorLabel.Text = errorMessage;
+            BorrowedBooks.Items.Clear();
+            string cmd = "SELECT b.titel, b.anzahl_verl, b.nummer FROM buch as b WHERE b.ausgeliehen_von LIKE '" + UserSelect.SelectedValue + "'";
+            connection.Open();
+            OleDbCommand selectCmd = new OleDbCommand(cmd, connection);
+            OleDbDataReader reader = selectCmd.ExecuteReader();
+            int index = 0;
+            while (reader.Read())
+            {
+                BorrowedBooks.Items.Insert(index, new ListItem(reader[0].ToString() + " - " + reader[1].ToString(), reader[2].ToString()));
+                index++;
+            }
+            reader.Close();
+            connection.Close();
+        }
+
+        protected void Zurückgeben_Click(object sender, EventArgs e)
+        {
+            SQLRequests sqlRequests = new SQLRequests();
+            string errorMessage = sqlRequests.ReturnBook(BorrowedBooks.SelectedValue,UserSelect.SelectedValue);
+            ErrorLabel.Text = errorMessage;
+            BorrowedBooks.Items.Clear();
+            string cmd = "SELECT b.titel, b.anzahl_verl, b.nummer FROM buch as b WHERE b.ausgeliehen_von LIKE '" + UserSelect.SelectedValue + "'";
+            connection.Open();
+            OleDbCommand selectCmd = new OleDbCommand(cmd, connection);
+            OleDbDataReader reader = selectCmd.ExecuteReader();
+            int index = 0;
+            while (reader.Read())
+            {
+                BorrowedBooks.Items.Insert(index, new ListItem(reader[0].ToString() + " - " + reader[1].ToString(), reader[2].ToString()));
+                index++;
+            }
+            reader.Close();
+            connection.Close();
+
+            List<string> availableBooks = new List<string>();
+            availableBooks.Clear();
+            availableBooks = sqlRequests.LoadAvailableBooks();
+            AvailableBooks.Items.Clear();
+            index = 0;
+            foreach (string user in availableBooks)
+            {
+                AvailableBooks.Items.Insert(index, new ListItem(user.Split(';')[0], user.Split(';')[1]));
+                index++;
+            }
+        }
+
+        protected void Reservieren_Click(object sender, EventArgs e)
+        {
+            SQLRequests sqlRequests = new SQLRequests();
+            string errorMessage = sqlRequests.ReserveBook(AvailableBooks.SelectedValue, UserSelect.SelectedValue);
+            ErrorLabel.Text = errorMessage;
         }
     }
 }
