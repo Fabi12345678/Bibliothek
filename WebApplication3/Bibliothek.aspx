@@ -25,8 +25,8 @@
                 Bibliothek
             </div>
             <div class="center">
-                <div class="tab is-active" data-tab="book-list-container">Bücherliste</div>
-                <div class="tab" data-tab="user-container">Nutzer</div>
+                <div class="tab is-active" data-tab="user-container">Nutzer</div>
+                <div class="tab" data-tab="book-list-container">Bücherliste</div>
             </div>
             <div class="bib-tab user-container col-12">
                 <div style="float:right; width:100%;" class="col-12">
@@ -34,20 +34,36 @@
                     </asp:DropDownList>
                     <asp:Button ID="UserSearchButton" runat="server" Text="Suchen" OnClick="UserSearchButton_Click"/>
                     <div class="user-data-container row"style=" margin-top:20px;">
-                        <div>
-                            <div class="card text-white bg-secondary mb-3" style="max-width: 18rem;">
+                        <div class="col-12">
+                            <div class="card text-white bg-secondary mb-3 col-3" style="max-width: 18rem;">
                                 <div class="card-header">Personendaten<a class="info-name"></a></div>
                                 <div class="card-body">
                                     <%= CallLoadUserInfos() %>
                                 </div>
                             </div>
+                            <div class="col-9">
+                                <table id="user-book-list" class="table table-striped table-bordered table-hover">
+                                    <thead class="thead-dark">
+                                        <tr>
+                                            <th>Nummer</th>
+                                            <th>Autor</th>
+                                            <th>Titel</th>
+                                            <th>Rückgabedatum</th>
+                                            <th>Anzahl Verlängerungen</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <%= CallLoadUserBooks() %>
+                                    </tbody>
+                                </table>
+                            </div>
                         </div>
-                        <div>
+                        <div class="col-12">
                             <asp:DropDownList ID="AvailableBooks" runat="server"></asp:DropDownList>
                             <asp:Button ID="AusleihButton" runat="server" Text="Ausleihen" OnClick="AusleihButton_Click" />
                             <asp:Button ID="Reservieren" runat="server" Text="Reservieren" OnClick="Reservieren_Click" />
                         </div>
-                        <div style="background-color:lightblue">
+                        <div class="col-12">
                             <asp:DropDownList ID="BorrowedBooks" runat="server"></asp:DropDownList>
                             <asp:Button ID="VerlängernButton" runat="server" Text="Verlängern" OnClick="VerlängernButton_Click" />
                             <asp:Button ID="Zurückgeben" runat="server" Text="Zurückgeben" OnClick="Zurückgeben_Click" />

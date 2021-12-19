@@ -7,7 +7,7 @@
     }
 
     init() {
-        this.tabVisibility('book-list-container');
+        this.tabVisibility('user-container');
         this.bindEvents();
     }
 
